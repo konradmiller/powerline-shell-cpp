@@ -1,7 +1,7 @@
 CXX = g++
-CPPFLAGS = --std=c++0x -I. -Ilib
-DEPS =
-OBJ  = main.o $(patsubst %.cpp,%.o,$(wildcard lib/*.cpp))
+CPPFLAGS = --std=c++0x -I. -Ilib -Isegments
+DEPS = $(wildcard lib/*.h) $(wildcard lib/*.cpp) $(wildcard segments/*.h) $(wildcard segments/*.cpp) main.c
+OBJ  = main.o $(patsubst %.cpp,%.o,$(wildcard lib/*.cpp)) $(patsubst %.cpp,%.o,$(wildcard segments/*.cpp))
 
 
 .PHONY: all
