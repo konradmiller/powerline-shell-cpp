@@ -16,51 +16,47 @@ enum Color
 	BLACK = 0, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE, NONE = 9
 };
 
+enum ColorVariant
+{
+	REGULAR   = 0, BOLD = 1, UNDERLINE = 4
+};
+
 
 // resetColor is setColor with default values
 #define resetColor setColor
-std::string setColor( Color = NONE, Color = NONE );
+std::string setColor( Color = NONE, Color = NONE, bool = false, ColorVariant = REGULAR );
 
 
 class ColorCode
 {
 public:
-	static std::string getBasicColorCode( Color foreground, Color background )
+	static std::string
+	getBasicColorCode( Color foreground = NONE, Color background = NONE, bool bright = false, ColorVariant variant = REGULAR )
 	{
+		int foreground_summand = bright ? 90  : 30;
+		int background_summand = bright ? 100 : 40;
+
 		std::stringstream code;
-		code	<< special( "esc" ) << "["
-			<< 30 + foreground  << ";"
-			<< 40 + background  << "m";
+		code	<< special( "esc" )                 << "["
+			<< variant                          << ";"
+			<< foreground_summand + foreground  << ";"
+			<< background_summand + background  << "m";
 		return code.str();
 	}
-	
+
 	static std::string EnumarateBasicColors()
 	{
 		std::stringstream rainbow;
-		for( unsigned bg = (unsigned) BLACK; bg <= (unsigned) WHITE; ++bg )
+		for( int bright = 0; bright <= 1; ++bright )
 		{
-			for( unsigned fg = (unsigned) BLACK; fg <= (unsigned) WHITE; ++fg )
-				rainbow << getBasicColorCode( (Color) fg, (Color) bg ) << " x ";
-			rainbow << resetColor() << std::endl;
+			for( unsigned bg = (unsigned) BLACK; bg <= (unsigned) WHITE; ++bg )
+			{
+				for( unsigned fg = (unsigned) BLACK; fg <= (unsigned) WHITE; ++fg )
+					rainbow << getBasicColorCode( (Color) fg, (Color) bg, bright ) << " x ";
+				rainbow << resetColor() << std::endl;
+			}
+			rainbow << resetColor() << std::endl << std::endl;
 		}
-		return rainbow.str();
-	}
-
-	static std::string getHighintensityColorCode( Color foreground )
-	{
-		std::stringstream code;
-		code	<< special( "esc" ) << "[38;5;"
-			<< 90 + foreground  << "m";
-		return code.str();
-	}
-
-	static std::string EnumarateHighintensityColors()
-	{
-		std::stringstream rainbow;
-		for( unsigned fg = (unsigned) BLACK; fg <= (unsigned) WHITE; ++fg )
-			rainbow << getHighintensityColorCode( (Color) fg ) << " x ";
-
-		rainbow << resetColor() << std::endl;
 		return rainbow.str();
 	}
 
