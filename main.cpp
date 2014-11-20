@@ -7,10 +7,10 @@
 int
 main()
 {
-//	std::cout << setColor( GREEN, RED ) << special( "dots" ) << resetColor() << std::endl;
-//	std::cout << ColorCode::EnumarateBasicColors();
+	std::cout << setColor( GREEN, RED ) << special( "dots" ) << resetColor() << std::endl;
+	std::cout << ColorCode::EnumarateBasicColors();
 
-	std::cout << Cwd::getSegment() << std::endl;
+	std::cout << cwd::getSegment() << std::endl;
 
 	return 0;
 }

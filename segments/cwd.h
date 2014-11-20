@@ -1,19 +1,11 @@
 #ifndef CWD_H__
 #define CWD_H__
 
-#include <unistd.h>
+#include <string>
 
-class Cwd
+namespace cwd
 {
-public:
-	static std::string getSegment()
-	{
-		char* cpath = get_current_dir_name();
-		std::string path = cpath;
-		free( cpath );
-		
-		return path;
-	}
-};
+	std::string getSegment();
+}
 
 #endif
