@@ -4,6 +4,7 @@ DEPS =
 OBJ  = main.o $(patsubst %.cpp,%.o,$(wildcard lib/*.cpp))
 
 
+.PHONY: all
 all: powerline-shell-cpp
 
 %.o: %.c $(DEPS)
