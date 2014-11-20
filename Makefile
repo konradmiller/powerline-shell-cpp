@@ -1,14 +1,22 @@
-all: main.cpp special_character.o color_code.o
-	g++ --std=c++0x main.cpp special_character.o color_code.o -o powerline-shell-cpp
+CXX = g++
+CPPFLAGS = --std=c++0x -I. -Ilib
+DEPS =
+OBJ  = main.o $(patsubst %.cpp,%.o,$(wildcard lib/*.cpp))
 
-special_character.o: special_character.h special_character.cpp
-	g++ -c --std=c++0x special_character.cpp
 
-color_code.o: color_code.h color_code.cpp
-	g++ -c --std=c++0x color_code.cpp
+all: powerline-shell-cpp
 
+%.o: %.c $(DEPS)
+	$(CXX) -c -o $@ $< $(CXXFLAGS)
+
+powerline-shell-cpp: $(OBJ)
+	$(CXX) -o $@ $^ $(CXXFLAGS)
+
+
+.PHONY: clean
 clean:
-	rm -f special_character.o color_code.o
+	rm -f $(OBJ)
 
+.PHONY: distclean
 distclean: clean
 	rm -f powerline-shell-cpp
