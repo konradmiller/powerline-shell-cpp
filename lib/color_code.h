@@ -50,6 +50,25 @@ public:
 		return rainbow.str();
 	}
 
+	static std::string getHighintensityColorCode( Color foreground )
+	{
+		std::stringstream code;
+		code	<< special( "esc" ) << "[38;5;"
+			<< 90 + foreground  << "m";
+		return code.str();
+	}
+
+	static std::string EnumarateHighintensityColors()
+	{
+		std::stringstream rainbow;
+		for( unsigned fg = (unsigned) BLACK; fg <= (unsigned) WHITE; ++fg )
+			rainbow << getHighintensityColorCode( (Color) fg ) << " x ";
+
+		rainbow << resetColor() << std::endl;
+		return rainbow.str();
+	}
+
+
 private:
 	static ColorMapping colors;
 

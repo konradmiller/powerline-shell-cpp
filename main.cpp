@@ -8,7 +8,8 @@ int
 main()
 {
 	std::cout << setColor( GREEN, RED ) << special( "dots" ) << resetColor() << std::endl;
-	std::cout << ColorCode::EnumarateBasicColors();
+	std::cout << ColorCode::EnumarateBasicColors() << std::endl;
+	std::cout << ColorCode::EnumarateHighintensityColors() << std::endl;
 
 	std::cout << cwd::getSegment() << std::endl;
 
