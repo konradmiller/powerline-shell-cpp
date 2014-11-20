@@ -29,7 +29,7 @@ public:
 	{
 		std::stringstream code;
 
-		code	<< special( "esc" )
+		code	<< special( "esc" ) << "["
 			<< 30 + foreground
 			<< ";"
 			<< 40 + background
