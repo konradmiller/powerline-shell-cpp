@@ -28,13 +28,9 @@ public:
 	static std::string getBasicColorCode( Color foreground, Color background )
 	{
 		std::stringstream code;
-
 		code	<< special( "esc" ) << "["
-			<< 30 + foreground
-			<< ";"
-			<< 40 + background
-			<< "m";
-
+			<< 30 + foreground  << ";"
+			<< 40 + background  << "m";
 		return code.str();
 	}
 	
