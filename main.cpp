@@ -6,7 +6,7 @@ int
 main()
 {
 
-	std::cout << SpecialCharacter::get( "dots" ) << std::endl;
+	std::cout << special( "dots" ) << std::endl;
 
 	return 0;
 }
