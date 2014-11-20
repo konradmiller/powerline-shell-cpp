@@ -25,7 +25,7 @@ std::string setColor( Color = NONE, Color = NONE );
 class ColorCode
 {
 public:
-	static std::string getColorCode( Color foreground, Color background )
+	static std::string getBasicColorCode( Color foreground, Color background )
 	{
 		std::stringstream code;
 
@@ -44,7 +44,7 @@ public:
 		for( unsigned bg = (unsigned) BLACK; bg <= (unsigned) WHITE; ++bg )
 		{
 			for( unsigned fg = (unsigned) BLACK; fg <= (unsigned) WHITE; ++fg )
-				rainbow << getColorCode( (Color) fg, (Color) bg ) << " x ";
+				rainbow << getBasicColorCode( (Color) fg, (Color) bg ) << " x ";
 			rainbow << resetColor() << std::endl;
 		}
 		return rainbow.str();
