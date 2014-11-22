@@ -23,7 +23,7 @@ flags = [
 '-isystem', '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include',
 '-I', './ClangCompleter',
 '-I', '.',
-'-I', 'segments'
+'-I', 'segments',
 '-I', 'lib'
 ]
 
