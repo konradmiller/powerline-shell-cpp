@@ -3,9 +3,11 @@
 
 #include <string>
 
+class ColorCombination;
+
 namespace cwd
 {
-	std::string getSegment( std::string );
+	std::string getSegment( const ColorCombination& );
 }
 
 #endif

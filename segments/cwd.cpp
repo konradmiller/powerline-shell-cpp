@@ -1,13 +1,15 @@
 #include <unistd.h>
 #include <sys/param.h>
 
+#include "color_code.h"
 #include "special_character.h"
 #include "string_manipulation.h"
+
 #include "cwd.h"
 
 namespace cwd
 {
-	std::string getSegment( std::string color )
+	std::string getSegment( const ColorCombination& color )
 	{
 		(void) color;
 		char cpath[MAXPATHLEN];
