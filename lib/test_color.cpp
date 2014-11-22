@@ -3,23 +3,6 @@
 
 namespace CC = ColorCode;
 
-std::string EnumarateBasicColors()
-{
-	std::stringstream rainbow;
-	for( int bright = 0; bright <= 1; ++bright )
-	{
-		for( unsigned bg = (unsigned) CC::BLACK; bg <= (unsigned) CC::WHITE; ++bg )
-		{
-			for( unsigned fg = (unsigned) CC::BLACK; fg <= (unsigned) CC::WHITE; ++fg )
-				rainbow << CC::getBasicColorCode( (CC::Color) fg, (CC::Color) bg, bright ) << " x ";
-			rainbow << CC::resetColor() << std::endl;
-		}
-		rainbow << CC::resetColor() << std::endl << std::endl;
-	}
-	return rainbow.str();
-}
-
-
 std::string Enumerate256Colors()
 {
 	std::stringstream rainbow;

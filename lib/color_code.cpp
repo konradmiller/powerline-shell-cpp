@@ -5,21 +5,7 @@ namespace ColorCode
 	std::string
 	resetColor()
 	{
-		return getBasicColorCode();
-	}
-
-	std::string
-	getBasicColorCode( Color foreground, Color background, bool bright, ColorVariant variant )
-	{
-		int foreground_summand = bright ? 90  : 30;
-		int background_summand = bright ? 100 : 40;
-
-		std::stringstream code;
-		code	<< special( "esc" )                 << "["
-			<< variant                          << ";"
-			<< foreground_summand + foreground  << ";"
-			<< background_summand + background  << "m";
-		return code.str();
+		return special( "esc" ) + "[0m";
 	}
 
 	std::string

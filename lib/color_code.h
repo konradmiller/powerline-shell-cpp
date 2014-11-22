@@ -10,27 +10,6 @@
 
 namespace ColorCode
 {
-	enum Color
-	{
-		BLACK = 0,
-		RED,
-		GREEN,
-		YELLOW,
-		BLUE,
-		MAGENTA,
-		CYAN,
-		WHITE,
-		NONE = 9
-	};
-
-	enum ColorVariant
-	{
-		REGULAR   = 0,
-		BOLD      = 1,
-		UNDERLINE = 4
-	};
-
-
 	// 256color terminals have value [0, 5] per RGB channel
 	struct Color256
 	{
@@ -54,7 +33,6 @@ namespace ColorCode
 	};
 
 	std::string resetColor();
-	std::string getBasicColorCode( Color foreground = NONE, Color background = NONE, bool bright = false, ColorVariant variant = REGULAR );
 	std::string get256ColorCode( const Color256& foreground, const Color256& background );
 }
 
