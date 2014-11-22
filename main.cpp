@@ -5,15 +5,19 @@
 #include "test_color.h"
 #include "cwd.h"
 
+namespace CC = ColorCode;
+
 int
 main()
 {
-	std::cout	<< ColorCode::getBasicColorCode( ColorCode::GREEN, ColorCode::RED ) << special( "dots" )
-			<< ColorCode::resetColor() << std::endl;
-//	std::cout << ColorCode::EnumarateBasicColors() << std::endl;
-	std::cout << Enumerate256Colors() << std::endl;
+	std::string white_on_gray = CC::get256ColorCode(CC::Color256(5, 5, 5), CC::Color256(1, 1, 1));
+	std::string gray_on_white = CC::get256ColorCode(CC::Color256(1, 1, 1), CC::Color256(5, 5, 5));
+	std::string reset         = CC::resetColor();
 
-	std::cout << cwd::getSegment() << std::endl;
+	std::cout
+		<< white_on_gray << cwd::getSegment( white_on_gray )
+		<< gray_on_white << special("separator")
+		<< reset << std::endl;
 
 	return 0;
 }
