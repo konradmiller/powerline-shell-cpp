@@ -13,9 +13,8 @@ namespace cwd
 		getcwd( cpath, sizeof(cpath)/sizeof(char) );
 		std::string path = cpath;
 
-		//path = replaceFirstSubstring( path, "/", special("separator") );
-		path = replaceAllSubstrings( path, "/", "#" );
-		
+		path = replaceAllSubstrings( path, "/", " " + special("separator_thin") + " " );
+
 		return path;
 	}
 }
