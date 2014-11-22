@@ -1,3 +1,4 @@
 *.o
 powerline-shell-cpp
 *.pyc
+tags
