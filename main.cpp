@@ -2,7 +2,7 @@
 
 #include "special_character.h"
 #include "color_code.h"
-#include "segments/cwd.h"
+#include "cwd.h"
 
 int
 main()
