@@ -7,13 +7,18 @@
 
 namespace cwd
 {
-	std::string getSegment()
+	std::string getSegment( std::string color )
 	{
+		(void) color;
 		char cpath[MAXPATHLEN];
 		getcwd( cpath, sizeof(cpath)/sizeof(char) );
 		std::string path = cpath;
 
-		path = replaceAllSubstrings( path, "/", " " + special("separator_thin") + " " );
+		if( (path.length() > 1) && (path[0] == '/') )
+			path[0] = ' ';
+
+		path = replaceAllSubstrings( path, "/",
+				" " + special("separator_thin") + " " );
 
 		return path;
 	}

@@ -5,7 +5,7 @@
 
 namespace cwd
 {
-	std::string getSegment();
+	std::string getSegment( std::string );
 }
 
 #endif
