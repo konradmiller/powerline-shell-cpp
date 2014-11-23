@@ -9,7 +9,7 @@
 int
 main()
 {
-//	std::cout << Enumerate256Colors();
+	// std::cout << EnumerateColors() << EnumerateGrayscale();
 	#define COLOR(name)  ColorCombination name = ColorCombination
 	#define RGB(a, b, c) Color((a), (b), (c))
 	#define GRAY(a)      Color((a))

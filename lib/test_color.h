@@ -4,5 +4,6 @@
 #include <string>
 
 std::string EnumerateColors();
+std::string EnumerateGrayscale();
 
 #endif

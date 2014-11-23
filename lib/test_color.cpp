@@ -30,3 +30,13 @@ std::string EnumerateColors()
 }
 
 
+std::string EnumerateGrayscale()
+{
+	std::stringstream rainbow;
+	for( unsigned short g = 0; g < 24; ++g )
+		rainbow << ColorCombination( Color(g), Color(g) ) << " x ";
+
+	rainbow << ColorCombination::resetColor() << std::endl << std::endl;
+	
+	return rainbow.str();
+}
