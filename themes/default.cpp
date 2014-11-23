@@ -1,1 +1,1 @@
-COLOR(white_on_gray)( Color256(5, 5, 5), Color256(0, 0, 0) );
+COLOR(white_on_gray)( GRAY(18), GRAY(6) );

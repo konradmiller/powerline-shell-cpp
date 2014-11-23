@@ -9,26 +9,42 @@
 #include "special_character.h"
 
 // 256color terminals have value [0, 5] per RGB channel
-struct Color256
+// or 0-24 gray scale shades
+class Color256
 {
-	unsigned short _r, _g, _b;
-
+public:
 	Color256()
-		: _r(0), _g(0), _b(0)
+		: red(0), green(0), blue(0), color(true)
 	{}
 
-	Color256( unsigned short r, unsigned short g, unsigned short b )
-		: _r(r), _g(g), _b(b)
-	{}
+	Color256( const unsigned short r, const unsigned short g, const unsigned short b )
+		: red(r), green(g), blue(b), color(true)
+	{
+		assert( (red   >= 0) && (red   <= 5) );
+		assert( (green >= 0) && (green <= 5) );
+		assert( (blue  >= 0) && (blue  <= 5) );
+	}
+
+	Color256( unsigned short g )
+		: gray(g), color(false)
+	{
+		assert( (gray >= 0) && (gray <= 0x17) );
+	}
 
 	int value() const
 	{
-		assert( (_r >= 0) && (_r <= 5) );
-		assert( (_g >= 0) && (_g <= 5) );
-		assert( (_b >= 0) && (_b <= 5) );
-		return 16 + 36*_r + 6*_g + _b;
+		if( color )
+			return 16 + 36*red + 6*green + blue;
+		else
+			return 0xe8 + gray;
 	}
+
+private:
+	unsigned short red, green, blue;
+	unsigned short gray;
+	bool color;
 };
+
 
 class ColorCombination
 {
