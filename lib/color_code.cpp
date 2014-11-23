@@ -14,9 +14,9 @@ std::string ColorCombination::getColorCode() const
 
 void ColorCombination::inverse()
 {
-	Color256 tmp = foreground;
-	foreground   = background;
-	background   = tmp;
+	Color tmp	= foreground;
+	foreground	= background;
+	background	= tmp;
 }
 
 

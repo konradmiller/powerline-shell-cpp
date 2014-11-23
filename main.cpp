@@ -11,8 +11,8 @@ main()
 {
 //	std::cout << Enumerate256Colors();
 	#define COLOR(name)  ColorCombination name = ColorCombination
-	#define RGB(a, b, c) Color256((a), (b), (c))
-	#define GRAY(a)      Color256((a))
+	#define RGB(a, b, c) Color((a), (b), (c))
+	#define GRAY(a)      Color((a))
 	#include "themes/default.cpp"
 	std::string reset = ColorCombination::resetColor();
 

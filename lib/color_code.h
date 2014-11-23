@@ -10,14 +10,14 @@
 
 // 256color terminals have value [0, 5] per RGB channel
 // or 0-24 gray scale shades
-class Color256
+class Color
 {
 public:
-	Color256()
+	Color()
 		: red(0), green(0), blue(0), color(true)
 	{}
 
-	Color256( const unsigned short r, const unsigned short g, const unsigned short b )
+	Color( const unsigned short r, const unsigned short g, const unsigned short b )
 		: red(r), green(g), blue(b), color(true)
 	{
 		assert( (red   >= 0) && (red   <= 5) );
@@ -25,7 +25,7 @@ public:
 		assert( (blue  >= 0) && (blue  <= 5) );
 	}
 
-	Color256( unsigned short g )
+	Color( unsigned short g )
 		: gray(g), color(false)
 	{
 		assert( (gray >= 0) && (gray <= 0x17) );
@@ -49,7 +49,7 @@ private:
 class ColorCombination
 {
 public:
-	ColorCombination( Color256 fg, Color256 bg )
+	ColorCombination( Color fg, Color bg )
 		: foreground(fg)
 		, background(bg)
 	{}
@@ -63,8 +63,8 @@ public:
 	}
 
 private:
-	Color256 foreground,
-		 background;
+	Color	foreground,
+		background;
 };
 
 

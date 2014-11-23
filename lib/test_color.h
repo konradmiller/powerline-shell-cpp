@@ -3,7 +3,6 @@
 
 #include <string>
 
-std::string EnumarateBasicColors();
-std::string Enumerate256Colors();
+std::string EnumerateColors();
 
 #endif
