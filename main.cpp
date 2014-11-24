@@ -5,15 +5,17 @@
 #include "special_character.h"
 
 #include "cwd.h"
-#include "test_color.h"
+#include "enumeratecolors.h"
 
 
 int
 main()
 {
-	std::cout << EnumerateColors() << EnumerateGrayscale();
 	
 	#include "themes/default.cpp"
+
+	std::cout << white_on_gray << " " << enumeratecolors::getSegment( white_on_gray );
+	std::cout << ColorCombination( NULL, &darkgray) << special("separator");
 
 	std::cout << white_on_gray << " " << cwd::getSegment( white_on_gray );
 	std::cout << ColorCombination( &darkgray, NULL ) << special("separator") << " ";
