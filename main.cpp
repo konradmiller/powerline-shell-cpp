@@ -15,12 +15,10 @@ main()
 	
 	#include "themes/default.cpp"
 
-	std::string reset = ColorCombination::resetColor();
-
-	std::cout << white_on_gray << cwd::getSegment( white_on_gray );
-	white_on_gray.inverse();
-	std::cout << white_on_gray << special("separator") << reset;
-	std::cout << std::endl;
+	std::cout << white_on_gray << " " << cwd::getSegment( white_on_gray );
+	std::cout << ColorCombination( &darkgray, NULL ) << special("separator") << " ";
+		
+	std::cout << ColorCombination::resetColor() << std::endl;
 
 	return 0;
 }

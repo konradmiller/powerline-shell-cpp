@@ -27,6 +27,16 @@ public:
 		return special( "esc" ) + "[0m";
 	}
 
+	static std::string resetForegroundColor()
+	{
+		return special( "esc" ) + "[39m";
+	}
+
+	static std::string resetBackgroundColor()
+	{
+		return special( "esc" ) + "[49m";
+	}
+
 private:
 	Color	*foreground,
 		*background;
