@@ -15,6 +15,26 @@ public:
 };
 
 
+// basic terminal colors
+class BasicColor : public Color
+{
+public:
+	BasicColor() : color(0) {}
+
+	BasicColor( const unsigned short c )
+		: color(c)
+	{
+		assert( color <= 7 );
+	}
+
+	int value() const;
+
+private:
+	unsigned short color;
+
+};
+
+
 // 256color terminals have value [0, 5] per RGB channel
 class Color256 : public Color
 {
