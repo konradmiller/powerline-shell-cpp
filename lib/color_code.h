@@ -20,15 +20,15 @@ public:
 	Color( const unsigned short r, const unsigned short g, const unsigned short b )
 		: red(r), green(g), blue(b), color(true)
 	{
-		assert( (red   >= 0) && (red   <= 5) );
-		assert( (green >= 0) && (green <= 5) );
-		assert( (blue  >= 0) && (blue  <= 5) );
+		assert( red   <= 5 );
+		assert( green <= 5 );
+		assert( blue  <= 5 );
 	}
 
 	Color( unsigned short g )
 		: gray(g), color(false)
 	{
-		assert( (gray >= 0) && (gray <= 0x17) );
+		assert( gray <= 0x17 );
 	}
 
 	int value() const

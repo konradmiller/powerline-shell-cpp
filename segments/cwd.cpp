@@ -13,7 +13,9 @@ namespace cwd
 	{
 		(void) color;
 		char cpath[MAXPATHLEN];
-		getcwd( cpath, sizeof(cpath)/sizeof(char) );
+		if( getcwd(cpath, sizeof(cpath)/sizeof(char)) == NULL )
+			return std::string();
+
 		std::string path = cpath;
 
 		if( (path.length() > 1) && (path[0] == '/') )
