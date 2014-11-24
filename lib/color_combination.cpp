@@ -29,6 +29,17 @@ void ColorCombination::inverse()
 }
 
 
+Color* ColorCombination::getForegroundColor()
+{
+	return foreground;
+}
+
+Color* ColorCombination::getBackgroundColor()
+{
+	return background;
+}
+
+
 std::ostream& operator<<( std::ostream& os, const ColorCombination& c )
 {
 	os << c.getColorCode();

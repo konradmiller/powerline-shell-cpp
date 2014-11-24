@@ -19,8 +19,12 @@ public:
 		, background(bg)
 	{}
 
-	std::string getColorCode() const;
 	void inverse();
+
+	std::string getColorCode() const;
+
+	Color* getForegroundColor();
+	Color* getBackgroundColor();
 
 	static std::string resetColor()
 	{
