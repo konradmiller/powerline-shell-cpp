@@ -19,7 +19,7 @@ namespace cwd
 		std::string path = cpath;
 
 		if( (path.length() > 1) && (path[0] == '/') )
-			path[0] = ' ';
+			path = path.substr( 1 );
 
 		path = replaceAllSubstrings( path, "/",
 				" " + special("separator_thin") + " " );
