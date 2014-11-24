@@ -1,5 +1,7 @@
 #include "test_color.h"
+
 #include "color_code.h"
+#include "color_combination.h"
 
 std::string EnumerateColors()
 {
@@ -27,7 +29,9 @@ std::string EnumerateColors()
 		{
 			for( unsigned short b = 0; b < 6; ++b )
 			{
-				rainbow << ColorCombination( Color(r,g,b), Color(r,g,b) ) << "  ";
+				Color256 fg = Color256(r,g,b),
+					 bg = Color256(r,g,b);
+				rainbow << ColorCombination( &fg, &bg ) << "  ";
 				rainbow << ColorCombination::resetColor() << "  ";
 			}
 			rainbow << "   ";
@@ -52,7 +56,8 @@ std::string EnumerateGrayscale()
 
 	for( unsigned short g = 0; g < 24; ++g )
 	{
-		rainbow << ColorCombination( Color(g), Color(g) ) << "  ";
+		GrayScale gray = GrayScale( g );
+		rainbow << ColorCombination( &gray, &gray ) << "  ";
 		rainbow << ColorCombination::resetColor() << "  ";
 	}
 

@@ -1,5 +1,5 @@
 CXX = g++
-CPPFLAGS = --std=c++0x -Wall -Wextra -Werror  -I. -Ilib -Isegments
+CPPFLAGS = --std=c++0x -Wall -Wextra -Werror  -I. -Ilib -Isegments -ggdb
 DEPS = $(wildcard lib/*.h) $(wildcard lib/*.cpp) $(wildcard segments/*.h) $(wildcard segments/*.cpp)
 OBJ  = main.o $(patsubst %.cpp,%.o,$(wildcard lib/*.cpp)) $(patsubst %.cpp,%.o,$(wildcard segments/*.cpp))
 

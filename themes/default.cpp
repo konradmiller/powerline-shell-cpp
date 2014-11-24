@@ -1,1 +1,3 @@
-COLOR(white_on_gray)( GRAY(18), GRAY(6) );
+GrayScale lightgray = GrayScale(18);
+GrayScale darkgray  = GrayScale(6);
+ColorCombination white_on_gray( &lightgray, &darkgray );

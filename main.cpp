@@ -1,19 +1,20 @@
 #include <iostream>
 
-#include "special_character.h"
 #include "color_code.h"
-#include "test_color.h"
+#include "color_combination.h"
+#include "special_character.h"
+
 #include "cwd.h"
+#include "test_color.h"
 
 
 int
 main()
 {
-	 std::cout << EnumerateColors() << EnumerateGrayscale();
-	#define COLOR(name)  ColorCombination name = ColorCombination
-	#define RGB(a, b, c) Color((a), (b), (c))
-	#define GRAY(a)      Color((a))
+	std::cout << EnumerateColors() << EnumerateGrayscale();
+	
 	#include "themes/default.cpp"
+
 	std::string reset = ColorCombination::resetColor();
 
 	std::cout << white_on_gray << cwd::getSegment( white_on_gray );
