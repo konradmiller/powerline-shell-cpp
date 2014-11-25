@@ -4,6 +4,7 @@
 #include "color_combination.h"
 #include "special_character.h"
 
+#include "currenttime.h"
 #include "cwd.h"
 #include "enumeratecolors.h"
 
@@ -14,8 +15,11 @@ main()
 	
 	#include "themes/default.cpp"
 
-	std::cout << white_on_gray << " " << enumeratecolors::getSegment( white_on_gray );
-	std::cout << ColorCombination( NULL, &darkgray) << special("separator");
+//	std::cout << white_on_gray << " " << enumeratecolors::getSegment( white_on_gray );
+//	std::cout << ColorCombination( NULL, &darkgray) << special("separator");
+
+	std::cout << white_on_gray << " " << currenttime::getSegment( white_on_gray );
+	std::cout << ColorCombination( &lightgray, &darkgray ) << " " << special("separator_thin") << " ";
 
 	std::cout << white_on_gray << " " << cwd::getSegment( white_on_gray );
 	std::cout << ColorCombination( &darkgray, NULL ) << special("separator") << " ";
