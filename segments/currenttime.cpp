@@ -11,12 +11,23 @@ namespace c = std::chrono;
 
 namespace currenttime
 {
+	static std::string formatCurrentTime( const tm & );
+	static tm getCurrentTime();
+
+
+	std::string getSegment()
+	{
+		return formatCurrentTime( getCurrentTime() );
+	}
+
 
 	static tm getCurrentTime()
 	{
 		tm tm_value;
+
 		std::time_t now = c::system_clock::to_time_t( c::system_clock::now() );
 		assert( localtime_r( &now, &tm_value ) );
+
 		return tm_value;
 	}
 
@@ -33,13 +44,6 @@ namespace currenttime
 		assert( ret == 8 );
 
 		return std::string( time_buffer );
-	}
-
-
-	std::string getSegment( const ColorCombination& color )
-	{
-		(void) color;
-		return formatCurrentTime( getCurrentTime() );
 	}
 }
 

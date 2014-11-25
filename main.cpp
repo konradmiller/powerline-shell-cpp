@@ -18,10 +18,10 @@ main()
 //	std::cout << white_on_gray << " " << enumeratecolors::getSegment( white_on_gray );
 //	std::cout << ColorCombination( NULL, &darkgray) << special("separator");
 
-	std::cout << white_on_gray << " " << currenttime::getSegment( white_on_gray );
+	std::cout << white_on_gray << " " << currenttime::getSegment();
 	std::cout << ColorCombination( &lightgray, &darkgray ) << " " << special("separator_thin") << " ";
 
-	std::cout << white_on_gray << " " << cwd::getSegment( white_on_gray );
+	std::cout << white_on_gray << " " << cwd::getSegment();
 	std::cout << ColorCombination( &darkgray, NULL ) << special("separator") << " ";
 		
 	std::cout << ColorCombination::resetColor() << std::endl;

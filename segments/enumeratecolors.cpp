@@ -6,22 +6,25 @@
 #include "enumeratecolors.h"
 
 
-namespace enumeratecolors 
+namespace enumeratecolors
 {
-	std::string getSegment( const ColorCombination& color )
+	static std::string EnumerateColors();
+	static std::string EnumerateGrayscale();
+
+
+	std::string getSegment()
 	{
-		(void) color;
 		std::stringstream segmentString;
 
 		segmentString << ColorCombination::resetColor();
-		segmentString << EnumerateColors() << std::endl;
+		segmentString << EnumerateColors()    << std::endl;
 		segmentString << EnumerateGrayscale() << std::endl;
 
 		return segmentString.str();
 	}
 
 
-	std::string EnumerateColors()
+	static std::string EnumerateColors()
 	{
 		std::stringstream rainbow;
 
@@ -61,7 +64,7 @@ namespace enumeratecolors
 	}
 
 
-	std::string EnumerateGrayscale()
+	static std::string EnumerateGrayscale()
 	{
 		std::stringstream rainbow;
 		for( unsigned short g = 0; g < 24; ++g )

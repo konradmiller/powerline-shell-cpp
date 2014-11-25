@@ -7,10 +7,7 @@ class ColorCombination;
 
 namespace enumeratecolors
 {
-	std::string getSegment( const ColorCombination& );
-
-	std::string EnumerateColors();
-	std::string EnumerateGrayscale();
+	std::string getSegment();
 }
 
 #endif

@@ -7,7 +7,7 @@ class ColorCombination;
 
 namespace currenttime
 {
-	std::string getSegment( const ColorCombination& );
+	std::string getSegment();
 }
 
 #endif

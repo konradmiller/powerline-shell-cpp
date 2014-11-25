@@ -7,7 +7,7 @@ class ColorCombination;
 
 namespace cwd
 {
-	std::string getSegment( const ColorCombination& );
+	std::string getSegment();
 }
 
 #endif

@@ -9,9 +9,8 @@
 
 namespace cwd
 {
-	std::string getSegment( const ColorCombination& color )
+	std::string getSegment()
 	{
-		(void) color;
 		char cpath[MAXPATHLEN];
 		if( getcwd(cpath, sizeof(cpath)/sizeof(char)) == NULL )
 			return std::string();
