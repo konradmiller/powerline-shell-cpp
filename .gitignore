@@ -2,3 +2,7 @@
 powerline-shell-cpp
 *.pyc
 tags
+GTAGS
+GRTAGS
+GPATH
+*~
