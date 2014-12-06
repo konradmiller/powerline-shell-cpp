@@ -1,5 +1,6 @@
 CXX = g++
 CPPFLAGS = --std=c++11 -Wall -Wextra -Werror  -I. -Ilib -Isegments -ggdb
+LDFLAGS = -lgit2
 DEPS = $(wildcard lib/*.h) $(wildcard lib/*.cpp) $(wildcard segments/*.h) $(wildcard segments/*.cpp)
 OBJ  = main.o $(patsubst %.cpp,%.o,$(wildcard lib/*.cpp)) $(patsubst %.cpp,%.o,$(wildcard segments/*.cpp))
 
@@ -11,7 +12,7 @@ all: powerline-shell-cpp
 	$(CXX) -c -o $@ $< $(CXXFLAGS)
 
 powerline-shell-cpp: $(OBJ)
-	$(CXX) -o $@ $^ $(CXXFLAGS)
+	$(CXX) -o $@ $^ $(CXXFLAGS) $(LDFLAGS)
 
 
 .PHONY: clean
