@@ -24,11 +24,11 @@ namespace git
       repoClean(true),
       gitRepoFound(false) { }
 
-    std::string getBranchName() { return currentBranchName; }
-    int getNumGenerationsAhead() { return numCommitsAhead; }
-    int getNumGenerationsBehind() { return numCommitsBehind; }
-    bool isRepoClean() { return repoClean; }
-    bool isGitRepo() { return gitRepoFound; }
+    std::string getBranchName() const { return currentBranchName; }
+    int getNumGenerationsAhead() const { return numCommitsAhead; }
+    int getNumGenerationsBehind() const { return numCommitsBehind; }
+    bool isRepoClean() const { return repoClean; }
+    bool isGitRepo() const { return gitRepoFound; }
 
   private:
     git_reference *currentBranchHandle;
