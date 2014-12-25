@@ -106,6 +106,10 @@ namespace git
     // for some reason, a commit to the local repo is a commit *behind* for this function
     // TODO: More testing to make sure this works as intended
     git_graph_ahead_behind(&numCommitsBehind, &numCommitsAhead, repoHandle, localOid, upstreamOid);
+
+    git_commit_free(localHead);
+    git_commit_free(upstreamHead);
+    git_reference_free(upstream);
   }
 
   git_commit *GitRepoStateSnapshot::branchToCommit(git_reference *branch) {
