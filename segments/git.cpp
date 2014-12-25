@@ -69,26 +69,21 @@ namespace git
   }
 
   void GitRepoStateSnapshot::computeCurrentBranchName() {
-    int error = 0;
-    git_branch_iterator *it;
-    git_branch_t type;
     const char *branch_name;
-    
-    error = git_branch_iterator_new(&it, repoHandle, GIT_BRANCH_LOCAL);
-    if (error) {
-      currentBranchName = "(error)";
+
+    if (git_repository_head_detached(repoHandle)) {
+      currentBranchHandle = nullptr;
+      currentBranchName = "(detached head)";
       return;
     }
-    
-    do {
-      error = git_branch_next(&currentBranchHandle, &type, it);
-      if (error == GIT_ITEROVER) { //Head not on branch
-	currentBranchName = "(no branch)";
-	currentBranchHandle = nullptr;
-	git_branch_iterator_free(it);
-	return;
-      }
-    } while (!git_branch_is_head(currentBranchHandle));
+
+    if (git_repository_head_unborn(repoHandle)) {
+      currentBranchHandle = nullptr;
+      currentBranchName = "(no branch)";
+      return;
+    }
+
+    git_repository_head(&currentBranchHandle, repoHandle);
 
     git_branch_name(&branch_name, currentBranchHandle);
     currentBranchName = branch_name;
