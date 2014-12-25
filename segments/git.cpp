@@ -13,22 +13,20 @@
 
 namespace git
 {
-  typedef std::vector<git_commit *> CommitVector;
-
   class GitRepoStateSnapshot {
 
   public:
     GitRepoStateSnapshot(std::string &repoPath);
     GitRepoStateSnapshot() : 
-      numGenerationsAheadOrBehind(0), 
+      numCommitsAhead(0), 
+      numCommitsBehind(0), 
       currentBranchName(), 
-      localIsAhead(true), 
       repoClean(true),
       gitRepoFound(false) { }
 
     std::string getBranchName() { return currentBranchName; }
-    int getNumGenerationsAheadOrBehind() { return numGenerationsAheadOrBehind; }
-    bool isLocalAhead() { return localIsAhead; }
+    int getNumGenerationsAhead() { return numCommitsAhead; }
+    int getNumGenerationsBehind() { return numCommitsBehind; }
     bool isRepoClean() { return repoClean; }
     bool isGitRepo() { return gitRepoFound; }
 
@@ -36,9 +34,8 @@ namespace git
     git_reference *currentBranchHandle;
     git_repository *repoHandle;
   
-    int numGenerationsAheadOrBehind;
+    size_t numCommitsAhead, numCommitsBehind;
     std::string currentBranchName;
-    bool localIsAhead;
     bool repoClean;
     bool gitRepoFound;
 
@@ -46,13 +43,9 @@ namespace git
     void computeCurrentBranchName();
     void computeGenerationDelta();
     void computeRepoClean();
-    CommitVector *makeParentsVector(CommitVector *commits);
-    void freeCommitVector(CommitVector *commits);
 
     git_commit *branchToCommit(git_reference *branch);
   };
-
-  git_commit *localHead, *upstreamHead;
 
   GitRepoStateSnapshot::GitRepoStateSnapshot(std::string &repoPath) {
     openGitRepo(repoPath);
@@ -101,26 +94,11 @@ namespace git
     currentBranchName = branch_name;
   }
 
-  static bool operator==(git_oid a, git_oid b) {
-    int i;
-    for (i = 0; i < GIT_OID_RAWSZ; ++i) {
-      if (a.id[i] != b.id[i])
-	return false;
-    } 
-    return true;
-  }
-
-  static bool isUpstreamHead(git_commit *c) {
-    return (*git_commit_id(c) == *git_commit_id(upstreamHead));
-  }
-
-  static bool isLocalHead(git_commit *c) {
-    return git_commit_id(c) == git_commit_id(localHead);
-  }
-
   void GitRepoStateSnapshot::computeGenerationDelta() {
     if (!currentBranchHandle) //detached head
       return;
+
+    git_commit *localHead, *upstreamHead;
 
     git_reference *upstream;
     git_branch_upstream(&upstream, currentBranchHandle);
@@ -128,47 +106,13 @@ namespace git
     localHead = branchToCommit(currentBranchHandle);
     upstreamHead = branchToCommit(upstream);
 
-    if (git_commit_id(localHead) == git_commit_id(upstreamHead)) {
-      localIsAhead = true;
-      numGenerationsAheadOrBehind = 0;
-      return;
-    }
+    const git_oid *localOid, *upstreamOid;
+    localOid = git_commit_id(localHead);
+    upstreamOid = git_commit_id(upstreamHead);
 
-    CommitVector *localCommits, *upstreamCommits, *tmp;
-    CommitVector::iterator it; 
-    unsigned int generations;
-      
-    localCommits = new CommitVector();
-    localCommits->push_back(localHead);
-
-    upstreamCommits = new CommitVector();
-    upstreamCommits->push_back(upstreamHead);
-
-    for (generations = 1; /*forever*/ ; ++generations) {
-      
-      tmp = makeParentsVector(localCommits);
-      freeCommitVector(localCommits);
-      localCommits = tmp;
-
-      it = std::find_if(localCommits->begin(), localCommits->end(), isUpstreamHead);
-      if (it != localCommits->end()) {
-	numGenerationsAheadOrBehind = generations;
-	localIsAhead = true;
-	break;
-      }
-    
-      tmp = makeParentsVector(upstreamCommits);
-      freeCommitVector(upstreamCommits);
-      upstreamCommits = tmp;
-
-      it = std::find_if(upstreamCommits->begin(), upstreamCommits->end(), isLocalHead);
-      if (it != upstreamCommits->end()) {
-	numGenerationsAheadOrBehind = generations;
-	localIsAhead = false;
-	break;
-      }
-      
-    }
+    // for some reason, a commit to the local repo is a commit *behind* for this function
+    // TODO: More testing to make sure this works as intended
+    git_graph_ahead_behind(&numCommitsBehind, &numCommitsAhead, repoHandle, localOid, upstreamOid);
   }
 
   git_commit *GitRepoStateSnapshot::branchToCommit(git_reference *branch) {
@@ -190,37 +134,6 @@ namespace git
     return commit;
   }
 
-  CommitVector *GitRepoStateSnapshot::makeParentsVector(CommitVector *commits) {
-    int parentCount;
-    git_commit *out;
-    int i, err;
-    CommitVector *parentVector = new CommitVector();
-    
-    for (git_commit *commit : *commits) {
-       
-      parentCount = git_commit_parentcount(commit);
-      for (i = 0; i < parentCount; ++i) {
-
-	err = git_commit_parent(&out, commit, i);
-	if (err)
-	  break; 
-	  // incomplete parents list => possibly no commit delta found. 
-	  // However, this only happens on horribly broken repos
-
-	parentVector->push_back(out);
-      }
-    }
-
-    return parentVector;
-  }
-
-  void GitRepoStateSnapshot::freeCommitVector(CommitVector *commits) {
-    for (git_commit *commit : *commits)
-      git_commit_free(commit);
-
-    delete commits;
-  }
-
   void GitRepoStateSnapshot::computeRepoClean() {
 
   }
@@ -237,10 +150,15 @@ namespace git
     if (repoState.isGitRepo()) {
       std::string *returnString = new std::string();
       returnString->append(repoState.getBranchName());
-      if (repoState.getNumGenerationsAheadOrBehind() > 0) {
+      if (repoState.getNumGenerationsAhead() > 0) {
 	returnString->push_back(' ');
-	returnString->append(std::to_string(repoState.getNumGenerationsAheadOrBehind()));
-	returnString->push_back(repoState.isLocalAhead() ? '+' : '-');
+	returnString->append(std::to_string(repoState.getNumGenerationsAhead()));
+	returnString->push_back('+');
+      }
+      if (repoState.getNumGenerationsBehind() > 0) {
+	returnString->push_back(' ');
+	returnString->append(std::to_string(repoState.getNumGenerationsBehind()));
+	returnString->push_back('-');
       }
       return *returnString;
     }
