@@ -17,12 +17,10 @@ namespace git
 
   public:
     GitRepoStateSnapshot(std::string &repoPath);
-    GitRepoStateSnapshot() : 
-      numCommitsAhead(0), 
-      numCommitsBehind(0), 
-      currentBranchName(), 
-      repoClean(true),
-      gitRepoFound(false) { }
+    ~GitRepoStateSnapshot() {
+      git_reference_free(currentBranchHandle);
+      git_repository_free(repoHandle);
+    }
 
     std::string getBranchName() const { return currentBranchName; }
     int getNumGenerationsAhead() const { return numCommitsAhead; }
