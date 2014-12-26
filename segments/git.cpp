@@ -25,7 +25,8 @@ namespace git
     std::string getBranchName() const { return currentBranchName; }
     int getNumGenerationsAhead() const { return numCommitsAhead; }
     int getNumGenerationsBehind() const { return numCommitsBehind; }
-    bool isRepoClean() const { return repoClean; }
+    bool repoIsClean() const { return repoClean; }
+    bool repoContainsUntrackedFiles() const {return containsUntrackedFiles; }
     bool isGitRepo() const { return gitRepoFound; }
 
   private:
@@ -35,6 +36,7 @@ namespace git
     size_t numCommitsAhead, numCommitsBehind;
     std::string currentBranchName;
     bool repoClean;
+    bool containsUntrackedFiles;
     bool gitRepoFound;
 
     void openGitRepo(std::string &repoPath);
@@ -132,7 +134,20 @@ namespace git
   }
 
   void GitRepoStateSnapshot::computeRepoClean() {
+    git_diff *diff;
+    git_diff_options opts;
+    git_diff_options_init(&opts, GIT_DIFF_OPTIONS_VERSION);
+    opts.flags = GIT_DIFF_INCLUDE_UNTRACKED | GIT_DIFF_INCLUDE_TYPECHANGE;
 
+    git_diff_index_to_workdir(&diff, repoHandle, nullptr, &opts);
+
+    int modifiedCount = git_diff_num_deltas(diff);
+    int untrackedCount = git_diff_num_deltas_of_type(diff, GIT_DELTA_UNTRACKED);
+
+    containsUntrackedFiles = (untrackedCount > 0);
+    repoClean = (modifiedCount == untrackedCount);
+
+    git_diff_free(diff);
   }
 
   std::string getSegment()
@@ -146,7 +161,12 @@ namespace git
     GitRepoStateSnapshot repoState(path);
     if (repoState.isGitRepo()) {
       std::string *returnString = new std::string();
+
+      if (!repoState.repoIsClean())
+	returnString->append("M ");
+      
       returnString->append(repoState.getBranchName());
+      
       if (repoState.getNumGenerationsAhead() > 0) {
 	returnString->push_back(' ');
 	returnString->append(std::to_string(repoState.getNumGenerationsAhead()));
@@ -157,6 +177,10 @@ namespace git
 	returnString->append(std::to_string(repoState.getNumGenerationsBehind()));
 	returnString->push_back('-');
       }
+
+      if (repoState.repoContainsUntrackedFiles())
+	returnString->append(" +");
+
       return *returnString;
     }
     else
