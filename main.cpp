@@ -19,10 +19,8 @@ main()
 //	std::cout << ColorCombination( NULL, &darkgray) << special("separator");
 
 	std::cout << white_on_gray << " " << currenttime::getSegment();
-	std::cout << ColorCombination( &lightgray, &darkgray ) << " " << special("separator_thin") << " ";
-
+	
 	std::cout << white_on_gray << " " << git::getSegment();
-	std::cout << ColorCombination( &lightgray, &darkgray ) << " " << special("separator_thin") << " ";	
 	
 	std::cout << white_on_gray << " " << cwd::getSegment();
 	std::cout << ColorCombination( &darkgray, NULL ) << special("separator") << " ";

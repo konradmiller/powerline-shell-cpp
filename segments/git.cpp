@@ -6,8 +6,10 @@
 #include <git2.h>
 
 #include "color_code.h"
+#include "color_combination.h"
 #include "special_character.h"
 #include "string_manipulation.h"
+#include "themes/default.cpp"
 
 #include "git.h"
 
@@ -159,11 +161,19 @@ namespace git
     std::string path = cpath;
 
     GitRepoStateSnapshot repoState(path);
-    if (repoState.isGitRepo()) {
-      std::string *returnString = new std::string();
+    
+    std::string *returnString = new std::string();
 
-      if (!repoState.repoIsClean())
-	returnString->append("M ");
+    if (repoState.isGitRepo()) {
+
+      ColorCombination &separatorColors = repoState.repoIsClean() ? repo_clean_separator : repo_dirty_separator;
+      ColorCombination &textColors = repoState.repoIsClean() ? repo_clean : repo_dirty;
+
+      returnString->append(separatorColors.getColorCode());
+      returnString->append(special("separator"));
+      returnString->push_back(' ');
+
+      returnString->append(textColors.getColorCode());
       
       returnString->append(special("git_branch"));
       returnString->push_back(' ');
@@ -184,10 +194,19 @@ namespace git
       if (repoState.repoContainsUntrackedFiles())
 	returnString->append(" +");
 
-      return *returnString;
+      returnString->push_back(' ');
+      separatorColors.inverse();
+      returnString->append(separatorColors.getColorCode());
+      returnString->append(special("separator"));
     }
-    else
-      return std::string();
+    else {
+      returnString->append(ColorCombination( &lightgray, &darkgray ).getColorCode());
+      returnString->push_back(' ');
+      returnString->append(special("separator_thin"));
+      returnString->push_back(' ');
+  }
+
+  return *returnString;
   }
 }
 
