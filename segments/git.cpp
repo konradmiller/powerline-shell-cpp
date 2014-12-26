@@ -165,17 +165,20 @@ namespace git
       if (!repoState.repoIsClean())
 	returnString->append("M ");
       
+      returnString->append(special("git_branch"));
+      returnString->push_back(' ');
+
       returnString->append(repoState.getBranchName());
       
       if (repoState.getNumGenerationsAhead() > 0) {
 	returnString->push_back(' ');
 	returnString->append(std::to_string(repoState.getNumGenerationsAhead()));
-	returnString->push_back('+');
+	returnString->append(special("git_ahead"));
       }
       if (repoState.getNumGenerationsBehind() > 0) {
 	returnString->push_back(' ');
 	returnString->append(std::to_string(repoState.getNumGenerationsBehind()));
-	returnString->push_back('-');
+	returnString->append(special("git_behind"));
       }
 
       if (repoState.repoContainsUntrackedFiles())
