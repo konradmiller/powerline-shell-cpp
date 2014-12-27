@@ -45,6 +45,7 @@ namespace git
     void computeCurrentBranchName();
     void computeGenerationDelta();
     void computeRepoClean();
+    int computeNumUntrackedFiles(git_status_list *status);
 
     git_commit *branchToCommit(git_reference *branch);
   };
@@ -136,20 +137,36 @@ namespace git
   }
 
   void GitRepoStateSnapshot::computeRepoClean() {
-    git_diff *diff;
-    git_diff_options opts;
-    git_diff_options_init(&opts, GIT_DIFF_OPTIONS_VERSION);
-    opts.flags = GIT_DIFF_INCLUDE_UNTRACKED | GIT_DIFF_INCLUDE_TYPECHANGE;
+    git_status_list *status;
+    git_status_options opts;
+    opts.version = GIT_STATUS_OPTIONS_VERSION;
+    opts.flags = GIT_STATUS_OPT_INCLUDE_UNTRACKED;
+    opts.show = GIT_STATUS_SHOW_INDEX_AND_WORKDIR;
+    opts.pathspec.count = 0;
 
-    git_diff_index_to_workdir(&diff, repoHandle, nullptr, &opts);
+    git_status_list_new(&status, repoHandle, &opts);
 
-    int modifiedCount = git_diff_num_deltas(diff);
-    int untrackedCount = git_diff_num_deltas_of_type(diff, GIT_DELTA_UNTRACKED);
+    int modifiedCount = git_status_list_entrycount(status);
+    int untrackedCount = computeNumUntrackedFiles(status);
 
     containsUntrackedFiles = (untrackedCount > 0);
     repoClean = (modifiedCount == untrackedCount);
 
-    git_diff_free(diff);
+    git_status_list_free(status);
+  }
+
+  int GitRepoStateSnapshot::computeNumUntrackedFiles(git_status_list *status) {
+    const git_status_entry *entry;
+    int num_entries = git_status_list_entrycount(status);
+    int i, untrackedCount = 0;
+
+    for (i = 0; i < num_entries; ++i) {
+      entry = git_status_byindex(status, i);
+      if (entry->status == GIT_STATUS_WT_NEW)
+    	untrackedCount++;
+    }
+
+    return untrackedCount;
   }
 
   std::string getSegment()
