@@ -97,10 +97,16 @@ namespace git
       return;
 
     git_commit *localHead, *upstreamHead;
-
-    git_reference *upstream;
-    git_branch_upstream(&upstream, currentBranchHandle);
     
+    int ret;
+    git_reference *upstream;
+    ret = git_branch_upstream(&upstream, currentBranchHandle);
+    if (ret) {
+      numCommitsAhead = 0;
+      numCommitsBehind = 0;
+      return;
+    }
+
     localHead = branchToCommit(currentBranchHandle);
     upstreamHead = branchToCommit(upstream);
 
