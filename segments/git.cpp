@@ -80,13 +80,13 @@ namespace git
       return;
     }
 
-    if (git_repository_head_unborn(repoHandle)) {
+    int ret;
+    ret = git_repository_head(&currentBranchHandle, repoHandle);
+    if (ret) {
       currentBranchHandle = nullptr;
       currentBranchName = "(no branch)";
       return;
     }
-
-    git_repository_head(&currentBranchHandle, repoHandle);
 
     git_branch_name(&branch_name, currentBranchHandle);
     currentBranchName = branch_name;
