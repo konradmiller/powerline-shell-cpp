@@ -9,12 +9,14 @@
 #include "color_combination.h"
 #include "special_character.h"
 #include "string_manipulation.h"
-#include "themes/default.cpp"
 
 #include "git.h"
 
 namespace git
 {
+
+#include "themes/default.cpp"
+
   class GitRepoStateSnapshot {
 
   public:
