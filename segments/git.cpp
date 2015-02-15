@@ -20,8 +20,10 @@ namespace git
   public:
     GitRepoStateSnapshot(std::string &repoPath);
     ~GitRepoStateSnapshot() {
-      git_reference_free(currentBranchHandle);
-      git_repository_free(repoHandle);
+      if (currentBranchHandle)
+	git_reference_free(currentBranchHandle);
+      if (repoHandle)
+	git_repository_free(repoHandle);
     }
 
     std::string getBranchName() const { return currentBranchName; }
@@ -32,8 +34,8 @@ namespace git
     bool isGitRepo() const { return gitRepoFound; }
 
   private:
-    git_reference *currentBranchHandle;
-    git_repository *repoHandle;
+    git_reference *currentBranchHandle = 0;
+    git_repository *repoHandle = 0;
   
     size_t numCommitsAhead, numCommitsBehind;
     std::string currentBranchName;
